@@ -357,6 +357,7 @@ def xinliyisheng():
     print('-'*25)
     print(sentence)
     while True:
+        print("||||||||||||||||||||||")
         hudong=input('指令：闲聊，道别：')
         if hudong=='闲聊':
             random_number=random.randint(0,3)
@@ -375,4 +376,56 @@ def xinliyisheng():
         if hudong =='求香':
             player_things_bag.append(thing_id_name[1])
             print(npc_name+"对你说：心诚则灵，小施主")
+        print("||||||||||||||||||||||")
+def dongfang_youlong():
+    import random
+    npc_name = '东方游龙'
+    sentence = 0
+    random_number = random.randint(0, 2)
+
+    if random_number == 0:
+        sentence = npc_name + '说:”'
+    if random_number == 1:
+        sentence = npc_name + '望着你说:“你找我有什么事吗？”'
+    if random_number == 2:
+        sentence = npc_name + '说：“汝有何求与吾”？'
+    try:
+        print('--------------特殊NPC:' + special_npc_wear_describe[npc_name] + npc_name + '(' + special_npc_name[
+            npc_name] + ')---------------')
+    except:
+        print('--------------特殊NPC:' + npc_name + '(' + special_npc_name[npc_name] + ')---------------')
+    try:
+        print('他看起来约莫已经' + special_npc_old['dongfang_youlong'] + '岁了')
+    except:
+        print('你没看出来他的年龄')
+    print(special_npc_describe[special_npc_name[npc_name]])
+    print('-' * 25)
+    print(sentence)
+    while True:
+        print("||||||||||||||||||||||")
+        hudong = input('指令：闲聊，道别：')
+        if hudong == '闲聊':
+            random_number = random.randint(0, 3)
+            if random_number == 0:
+                sentence = '我是'
+            elif random_number == 1:
+                sentence = '神明并非遥不可及，只要你专心修炼，当大机缘成熟，便可收获果实'
+            elif random_number == 2:
+                sentence = '我'
+            elif random_number == 3:
+                sentence = '我来自'
+            print(npc_name + '对着你说：' + sentence + '\n···············')
+        if hudong == '道别':
+            print('---你对' + npc_name + '鞠躬后道别后离开了')
+            break
+        if hudong=='战斗':
+            print('你对着「'+npc_name+'」大喊:“阁下领教壮士高招!”')
+            message=zhandou('dongfang_youlong',0.0,is_special=1)
+            if message[0]=='胜利':
+                print('\n\n你战胜了'+npc_name)
+            elif message[0]=='失败':
+                print('\n\n'+npc_name+'把你打得满地找牙')
+            player_sx0['生命值']=message[1]
+
 #sishen()
+#normal_npc_hd("乞丐",0.1)

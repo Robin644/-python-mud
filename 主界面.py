@@ -2,6 +2,7 @@
 from sjk import *
 from gn_hs import *
 from player import *
+import jq
 import json
 replace=[0,0]
 is_in_room=0
@@ -9,6 +10,11 @@ now_id=0.1
 
 now_zuobiao='0,0'
 now_map=map_room_yzc_name
+#
+import sjk
+sjk.player_name=sjk.get_player_name()
+
+###
 ''' 
 with open('liveplace.txt','r') as fileobj:
     now_zuobiao=fileobj.readline()         

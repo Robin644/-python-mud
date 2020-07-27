@@ -1,10 +1,95 @@
 from sjk import *
+import mission
+
+def mission_check():
+    while True:
+        print("▂"*20)
+        print("-"*10+"任务"+"-"*10)
+        import sjk
+        print("*"*20)
+        print("你现在有"+str(len(sjk.player_mission_id))+"个未完成任务，你已经完成了"+str(len(sjk.player_completed_mission_id))+"个任务")
+        print("你未完成的任务:")
+        for id in sjk.player_mission_id:
+
+            print(str(mission.mission_id_name[id]).replace('"', '').replace("[","").replace("]", ""))
+        print("你已完成的任务:")
+        for id in sjk.player_completed_mission_id:
+            print(str(mission.mission_id_name[id]).replace('"', '').replace("[", "").replace("]", ""))
+
+
+
+
+        action=str(input("输入0退出,输入1查看未完成任务，输入2查看已完成任务,输入3进行任务进度刷新（重要）: "))
+        if action=="0":
+            break
+        elif action=="1":
+            print("-"*20)
+            try:
+                xuhao=int(input("输入查看任务序号(0-x): "))
+            except:
+                print("请输入正确的序号!")
+                continue
+            try:
+                print("▆"*30)
+                print("-"*10+"任务:"+str(mission.mission_id_name[sjk.player_mission_id[xuhao]])+"-"*10)
+                print("任务内容:"+mission.mission_neirong[sjk.player_mission_id[xuhao]])
+                print("任务要求："+mission.mission_yaoqiu_describe[sjk.player_mission_id[xuhao]])
+                print("任务奖励:"+mission.mission_jiangli_describe[sjk.player_mission_id[xuhao]])
+                print()
+                print("▆" * 30)
+
+            except:
+                print("出bug聊,加QQ2432541891反馈北")
+                print("-" * 20)
+        elif action == "2":
+            print("-" * 20)
+            try:
+                xuhao = int(input("输入查看已完成任务序号(0-x): "))
+            except:
+                print("请输入正确的序号！")
+                continue
+            try:
+                print("▆" * 30)
+                print("-" * 10 + "任务:" + mission.mission_id_name[sjk.player_completed_mission_id[xuhao]] + "-" * 10)
+                print("任务内容:" + mission.mission_neirong[sjk.player_completed_mission_id[xuhao]])
+                print("任务要求：" + mission.mission_yaoqiu_describe[sjk.player_completed_mission_id[xuhao]])
+                print("任务奖励:" + mission.mission_jiangli_describe[sjk.player_completed_mission_id[xuhao]])
+                print()
+                print("▆" * 30)
+
+            except:
+                print("出bug聊,加QQ2432541891反馈北")
+            print("-" * 20)
+        elif action == "3":
+            try:
+                times=len(sjk.player_mission_id)
+                while times >0:
+                    for id in player_mission_id:
+                        eval("mission.mission_yaoqiu_"+str(id))()
+                    times-=1
+            except:
+                print("oops,又出bug了")
+
+
+
+
+
+
+
+
+
+
+    print("*"*20)
+    print("▂" * 20)
+
 def player_selfcheck(describe_list,player_wearing_describe,player_money,player_face,player_smz,player_max_smz,player_describe_bag,now_id):
     a=True
     while a: 
         print('------------------------------')
-        print('输入0退出，输入1打开背包，输入2查看自己，输入3查看称号,输入4查看属性,输入5查看技能，输入6打开装备系统，输入7丢下物品，输入8疗伤\n:')
+        print('输入0退出，输入1打开背包，输入2查看自己，输入3查看称号,输入4查看属性,输入5查看技能，输入6打开装备系统，输入7丢下物品，输入8疗伤,输入9打开任务系统\n:')
         player_choose_2=str(input('输入序号'))
+        if player_choose_2 == "9" or player_choose_2 == "任务系统":
+            mission_check()
         if player_choose_2=='5' or player_choose_2=='查看技能':
             print('-'*30)
             print('*********玩家技能列表*********')
@@ -66,7 +151,8 @@ def player_selfcheck(describe_list,player_wearing_describe,player_money,player_f
                         else:
                             print('成功装备技能「'+player_skill0[int(wear_skill)]+'」')
                             break
-                        
+
+
             if code=='1':
                 
                 print('-'*30)
@@ -202,6 +288,8 @@ def player_selfcheck(describe_list,player_wearing_describe,player_money,player_f
             
             
             print()
+            import sjk
+            print("姓名:"+sjk.player_name)
             print('称号:'+str(player_wearing_describe))
             print('性别:')
             print('年龄:')

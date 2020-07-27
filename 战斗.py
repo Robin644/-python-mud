@@ -2,6 +2,7 @@ from sjk import *
 from player import *
 from random import *
 from skl import *
+from skl_buff import *
 def zhandou(attack_npc_id,now_id=0.1,is_special=1):
     print('='*30)
     print('-'*14+'战斗'+'-'*14)
@@ -38,8 +39,10 @@ def zhandou(attack_npc_id,now_id=0.1,is_special=1):
                         #print(player_attack_buff[key])
                         del player_attack_buff[key]
                     ##buff作用
-                    if key == "血咒":
-                        print("这里会显示出buff的作用")
+                    if "血咒" in player_attack_buff:
+                        player_sx1["生命值"]=xuezhou("你", player_sx1)
+                    if "地狱无门" in player_attack_buff:
+                        player_sx1["生命值"]=diyuwumen("你", player_sx1)
                         
             except:
                 pass        
@@ -54,9 +57,17 @@ def zhandou(attack_npc_id,now_id=0.1,is_special=1):
                         del attack_npc_buff[key]
                     
                     ##buff作用
+                    if key == "血咒":
+                        player_sx1["生命值"]=xuezhou(attack_npc_name,attack_npc_sx)
+                    if key == "地狱无门":
+                        player_sx1["生命值"]=diyuwumen(attack_npc_name,attack_npc_sx)
+
+
                    
                        
             except:
+
+
                 pass
             
         enemie_hp_des=''
@@ -64,7 +75,7 @@ def zhandou(attack_npc_id,now_id=0.1,is_special=1):
         if hp_bfb >= 100:
             enemie_hp_des=attack_npc_name+' 看起来气血充裕，一点也没有受伤。'  
         elif hp_bfb <= 100 and hp_bfb>=90:
-            enemie_hp_des=attack_npc_name+' 看起来气息有些散乱，不过好像并无大碍，。'  
+            enemie_hp_des=attack_npc_name+' 看起来气息有些散乱，不过好像并无大碍。'
         elif hp_bfb <= 90 and hp_bfb>=80:
             enemie_hp_des=attack_npc_name+' 看起来气息有些散乱，状态不是很好'  
         elif hp_bfb <= 80 and hp_bfb>=70:
@@ -108,8 +119,13 @@ def zhandou(attack_npc_id,now_id=0.1,is_special=1):
                     print('你没有任何装备着的技能。')
                     ac_0=False
                 else:
-                    
-                    skill_code=int(input('输入使用技能序号'))
+                    try:
+                        skill_code=int(input('输入使用技能序号("输入-1退出")'))
+                        if skill_code==-1:
+                            break
+                    except:
+                        print("**请输入正确的序号")
+                        continue
                     try:
                         player_wearing_skill[skill_code]
                     except:
@@ -189,7 +205,7 @@ def zhandou(attack_npc_id,now_id=0.1,is_special=1):
                 print('***你'+player_zs_describe)
                 print('***你对敌人「'+attack_npc_name+'」造成了'+str(shanghai)+'点伤害')
         #玩家普攻敌人也普攻
-                player_zs=randint(1,4)#随机出招
+                player_zs=randint(5,5)#随机出招
                 if player_zs == 1:
                     player_zs_describe='大骂一声，挥拳向「'+'你'+'」猛的打去'
                     shanghai=1.5*(attack_npc_sx['攻击力']-player_sx0['防御力'])
@@ -202,13 +218,33 @@ def zhandou(attack_npc_id,now_id=0.1,is_special=1):
                 elif player_zs == 4:
                     player_zs_describe='一掌向前，向「'+'你'+'」猛的拍去'
                     shanghai=attack_npc_sx['攻击力']-player_sx0['防御力']+1
+                elif player_zs == 5:
+
+                    if is_special == 1:
+                        enemie_skill = eval(str(attack_npc_id) + '_skill')[
+                            random.randint(0, len(eval(str(attack_npc_id) + '_skill')) - 1)]
+                    elif is_special == 0:
+                        enemie_skill = normal_npc_skill[0]
+                    back_message = eval(skill0_name_id[enemie_skill])(attack_npc_id, 'player', 0, is_special)
+                    try:
+                        print("你获得了 " + str(back_message[2]) + " Buff!")
+                        player_attack_buff[back_message[2]] = back_message[3]
+                    except:
+                        pass
+
+                    attack_npc_sx['生命值'] = back_message[1]['生命值']
+                    player_sx0['生命值'] = back_message[0]['生命值']
+
+
             #结算
-                if shanghai<0:
+                if shanghai<0 and player_zs != 5:
                     shanghai=1
-                player_sx0['生命值']-=shanghai
-                print()
-                print('***'+attack_npc_name+player_zs_describe)
-                print('***敌人对「'+'你'+'」造成了'+str(shanghai)+'点伤害')
+                    player_sx0['生命值']-=shanghai
+                    print()
+                    print('***'+attack_npc_name+player_zs_describe)
+                    print('***敌人对「'+'你'+'」造成了'+str(shanghai)+'点伤害')
+                else:
+                    pass
                 level+=1
                 break
                 

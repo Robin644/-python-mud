@@ -26,11 +26,11 @@ for key,value in thing_name_id.items():
     thing_id_name[value]=key#配对id与名字
 thing_id_describe={0:'！！！祝大家生地中考及期末考试圆满成功！！！\n----------\n|   满    |\n|   分    |\n----------',1:'一支神香，可以在巫师那求取，蕴含着一些神威',2:'看到这个就是出bug了',3:'看到这个就是出bug了'}
 #战斗技能
-skill0_name_id={'血海无边':'xuehaiwubian','野球拳':'yeqiuquan','太极拳·阴':'taijiquan_yin',"太极拳":"taijiquan"}
+skill0_name_id={'血海无边':'xuehaiwubian','野球拳':'yeqiuquan','太极拳·阴':'taijiquan_yin',"太极拳":"taijiquan","苦海无边":"kuhaiwubian"}
 skill0_id_name={}
 for key,value in skill0_name_id.items():
     skill0_id_name[value]=key#配对id与名字
-skill0_id_describe={'xuehaiwubian':'技能内容','yeqiuquan':'技能内容','taijiquan_yin':"技能描述","taijiquan":'马保国老师'}
+skill0_id_describe={'xuehaiwubian':'技能内容','yeqiuquan':'技能内容','taijiquan_yin':"技能描述","taijiquan":'马保国老师',"kuhaiwubian":"sad"}
 #生活技能:
 skill1_name_id={'厨艺':'chuyi','书法':'shufa'}
 skill1_id_name={}
@@ -44,6 +44,8 @@ skill1_id_describe={'chuyi':'技能内容','shufa':'技能内容'}
 
 #玩家数据库
 import random
+#name
+player_name=None
 #称号
 describe_list=['普通百姓','人皇']
 player_wearing_describe=[]#已装备称号
@@ -57,22 +59,23 @@ player_describe_bag=[describe_list[1]]
 player_money=0
 player_face=random.randint(0,100)
 
+
 #玩家属性
 player_sx0={'最大内力':100,'最大生命值':1500,'内力':150,'生命值':1100,'攻击力':50,'防御力':5,'闪躲力':10}
 player_sx1={'根骨':0,'悟性':0,'身法':0,'臂力':0}
-player_sx2={'银两':0,'黄金':0,'是否为巫师':0}
+player_sx2={'银两':0,'黄金':0,'巫师':0}
 #玩家技能列表:
 player_skill0=[skill0_id_name['xuehaiwubian'],skill0_id_name['taijiquan']]#战斗技能
 player_skill1=[]#生活技能
 player_skill0_level={'xuehaiwubian':0}
 player_skill1_level={}
 #玩家装备技能(只能装备战斗技能)
-player_wearing_skill=[player_skill0[0]]
+player_wearing_skill=[]
 
 
 #玩家任务列表:
-player_mission_id=[]
-
+player_mission_id=[]#正在做的任务
+player_completed_mission_id=[]
 
 
 #以下是地图数据库:
@@ -185,26 +188,26 @@ for key,value in normal_npc_name.items():
 normal_npc_describe={'laowang':'他看起来贼眉鼠眼，嘴歪眼斜，身高七尺，看上去气血充盈，并没有受伤。',
 'qigai':'他看起来面容枯瘦，嘴歪眼斜，浑身散发着恶臭，让人看起来就很不舒服，你心里提醒你还是离他远一些吧'}#玩家看到普通npc时的形容
 #特殊npc
-special_npc_list=['死神','巫师','厨娘','debug']
-special_npc_name={special_npc_list[0]:'sishen',special_npc_list[1]:'wushi',special_npc_list[2]:'chuniang',special_npc_list[3]:'debug'}
-special_npc_id={'sishen':special_npc_list[0],'wushi':special_npc_list[1],'chuniang':special_npc_list[2],'debug':special_npc_list[3]}
+special_npc_list=['死神','巫师','厨娘','东方游龙']
+special_npc_name={special_npc_list[0]:'sishen',special_npc_list[1]:'wushi',special_npc_list[2]:'chuniang',special_npc_list[3]:'dongfang_youlong'}
+special_npc_id={}
 for key,value in special_npc_name.items():
     special_npc_id[value]=key#配对id与名字
 
 
 
-special_npc_describe={'sishen':'他看起来倾国倾城，无数人为之倾倒，身披黑衣，一团黑暗的浓雾缠绕他周身。周围充斥着无形的威压，冰冷到极致，让人几乎无法呼吸',
-'wushi':'他是全国鼎鼎有名的大巫神，据说武功已经达到了神境，肉身据说已经达到了金身等级，犹如一尊真神',
-'chuniang':'这位是酒楼的厨娘，看起来貌美如花，手中拿着竹扇子，正在缓缓地扇动着，美眸不时朝你看来',
-'debug':'debug'}#玩家看到普通npc时的形容
+special_npc_describe={'sishen':'他看起来倾国倾城，无数人为之倾倒，身披黑衣，一团黑暗的浓雾缠绕他周身。周围充斥着无形的威压，冰冷到极致，让人几乎无法呼吸。',
+'wushi':'他是全国鼎鼎有名的大巫神，据说武功已经达到了神境，肉身已经达到了金身等级，犹如一尊真神。',
+'chuniang':'这位是酒楼的厨娘，看起来貌美如花，手中拿着竹扇子，正在缓缓地扇动着，美眸不时朝你看来。',
+'dongfang_youlong':'他是来自东方的神秘大能，也是游戏中的新手向导，有什么问题可以向他提问哦。'}#玩家看到普通npc时的形容
 #以下是特殊npc的属性
-special_npc_old={'sishen':'五千六百三十一','wushi':'三百','chuniang':'四十五','debug':'debug'}
-special_npc_wear_describe={'死神':'「不死不灭」','巫师':'「肉身真神」','厨娘':'「富可敌国」','debug':'「加油」'}
+special_npc_old={'sishen':'未知','wushi':'未知','chuniang':'未知','dongfang_youlong':'未知'}
+special_npc_wear_describe={'死神':'「不死不灭」','巫师':'「肉身真神」','厨娘':'「富可敌国」','dongfang_youlong':'「新手引导」'}
 #特殊npc战斗属性
 special_npc_sishen_sx={'最大生命值':1000,'生命值':1000,'攻击力':2005,'防御力':2005,'闪躲力':10}
 special_npc_wushi_sx={'最大生命值':1000,'生命值':1000,'攻击力':25,'防御力':25,'闪躲力':10}
 special_npc_chuniang_sx={'最大生命值':1000,'生命值':1000,'攻击力':25,'防御力':25,'闪躲力':10}
-special_npc_debug_sx={'最大生命值':10000,'生命值':10000,'攻击力':2005,'防御力':2005,'闪躲力':10}
+special_npc_dongfang_youlong_sx={'最大生命值':5200000,'生命值':5200000,'攻击力':1,'防御力':9999,'闪躲力':10}
 #普通npc技能列表
 normal_npc_skill=[skill0_id_name['yeqiuquan']]
 
@@ -213,6 +216,7 @@ normal_npc_skill=[skill0_id_name['yeqiuquan']]
 sishen_skill=[skill0_id_name['xuehaiwubian']]
 chuniang_skill=[skill0_id_name['xuehaiwubian']]
 wushi_skill=[skill0_id_name['xuehaiwubian']]
+dongfang_youlong_skill=[skill0_id_name['kuhaiwubian']]
 
 
 
@@ -234,7 +238,12 @@ thing_room_0_1=[wear_id_name[0]]
 #以下是房间房间上散落的东西
 thing_room_room_0_61=[wear_id_name[0]]
 
-
+def get_player_name():
+    player_name = input("你是魔帝之子，名为:")
+    if player_name=="" or player_name==" ":
+        print("你的名字叫 吗？不是吧不是吧，好吧我帮你想一个名字吧，以后你就叫 陌 了！")
+        player_name="陌"
+    return player_name
 
 
 
