@@ -12,10 +12,11 @@ now_zuobiao='0,0'
 now_map=map_room_yzc_name
 #
 import sjk
-sjk.player_name=sjk.get_player_name()
+
 
 ###
 ''' 
+
 with open('liveplace.txt','r') as fileobj:
     now_zuobiao=fileobj.readline()         
     
@@ -163,17 +164,17 @@ map_zuobiao_y={0.1:0,0.2:0,0.3:0}
             print('oops,出错了')
             continue 
     if player_code == '个人':
-        #player_selfcheck(describe_list,player_wearing_describe,player_money,player_face,player_smz,player_max_smz,player_xb,player_describe_bag)
-        player_selfcheck(describe_list,player_wearing_describe,player_money,player_face,player_sx0['生命值'],player_sx0['最大生命值'],player_describe_bag,now_id)
+        #player_selfcheck(describe_list,player_wearing_describe,player_face,player_smz,player_max_smz,player_xb,player_describe_bag)
+        player_selfcheck(describe_list,player_wearing_describe,player_face,player_sx0['生命值'],player_sx0['最大生命值'],player_describe_bag,now_id)
     if player_code =='进入房间':
         try:
             room_id=int(input('输入要进入房间的序号:\n'))
         except:
-            print('€€€€€€€€€€€序号格式不合法€€€€€€€€€€')
+            print('\n€€€€€€€€€€€序号格式不合法€€€€€€€€€€\n')
     
         try:
             '''
-            room_0_6_name={0.61:'后厨'}#0_6代表.
+            room_0_6_name={0.61:'后厨'}#0_6代表0.6
 room_0_6_id={'后厨':0.61}
 room_room_0_6=['后厨']
             '''

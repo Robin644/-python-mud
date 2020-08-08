@@ -325,8 +325,8 @@ def kuhaiwubian(user_id, attack_id, is_player=1, is_special=1):
     print('「' + user_name + '」 对 「' + attack_enemie_name + '」 使用了技能***「苦海无边」***')
     zhaoshi = randint(1, 2)
     if zhaoshi == 1:
-        print('█' + user_name + '使出一招「我入地狱」，无边的阴煞之气从远方忽然袭来，将' + attack_enemie_name + '笼罩其中，不断啃食着他的身躯')
-
+        print('█' + user_name + '使出一招「我入地狱」，无边的阴煞之气从远方忽然袭来，将' + attack_enemie_name + '笼罩其中，不断啃食着'+attack_enemie_name+'的身躯')
+        print('凄凄凄凄凄凄的声音在'+attack_enemie_name+'的耳边响起，令他毛骨悚然！！！')
         panduan = randint(1, 2)
         if panduan == 1:  # 触发暴击
             attack = user_sx['攻击力']
@@ -358,6 +358,72 @@ def kuhaiwubian(user_id, attack_id, is_player=1, is_special=1):
     buff_level = 15
 
     # 添加buff---------尾
+    back_message = [attack_enemie_sx, user_sx, buff_name, buff_level]
+    return back_message
+    print('*' * 30)
+
+
+def gugugu(user_id, attack_id, is_player=1, is_special=None):
+    # wg:咕咕咕
+
+    # 赋值攻击者与被攻击者属性
+    if is_player == 1:  # 如果使用者是玩家
+        user_id = None  # id为玩家
+        user_name = '你'
+        if is_special == 1:
+            attack_enemie_name = special_npc_id[attack_id]
+            attack_enemie_sx = eval('special_npc_' + attack_id + '_sx')
+        elif is_special == 0:
+            attack_enemie_sx = normal_npc_sx
+            attack_enemie_name = normal_npc_id[attack_id]
+        user_sx = player_sx0  # 赋值攻击者属性
+
+    else:
+        user_id = user_id
+        if is_special == 1:
+            user_name = special_npc_id[user_id]
+            user_sx = eval('special_npc_' + user_id + '_sx')
+        #  attack_enemie_name='你'
+        else:
+            user_name = normal_npc_id[user_id]
+            user_sx = normal_npc_sx
+        attack_enemie_name = '你'
+
+        attack_enemie_sx = player_sx0
+    print('*' * 30)
+    print('「' + user_name + '」 对 「' + attack_enemie_name + '」 使用了技能「！咕咕咕！」')
+    zhaoshi = randint(1, 2)
+    if zhaoshi == 1:
+        print('◇' + user_name + '使出一招「小鸡啄米」张开鸡喙向着' + attack_enemie_name + '叮去')
+
+        panduan = randint(1, 2)
+        if panduan == 1:
+            attack = user_sx['攻击力']
+            print('\n---' + user_name + '这一击无视了敌人的防御!!!造成了' + str(attack) + '点伤害')
+        else:
+            attack = user_sx['攻击力'] - attack_enemie_sx['防御力']
+            print('\n===' + user_name + '这一击造成了' + str(attack) + '点伤害')
+        if attack < 0:
+            attack = 0
+            print(user_name + '的攻击没有突破防御，未造成伤害')
+        attack_enemie_sx['生命值'] -= attack
+
+
+    elif zhaoshi == 2:
+        print('◇' + user_name + '使出一招「真★打鸡血」极力张开喙向着' + attack_enemie_name + '大声鸣叫！！！')
+        panduan = randint(1, 2)
+        if panduan == 1:
+            attack = user_sx['攻击力'] * 2
+            print('\n---' + user_name + '使得敌人手足无措。这一击得到了双倍伤害!!!造成了' + str(attack) + '点伤害')
+        else:
+            attack = user_sx['攻击力'] - attack_enemie_sx['防御力']
+            print('\n===' + user_name + '这一击造成了' + str(attack) + '点伤害')
+        if attack < 0:
+            attack = 0
+            print(user_name + '的攻击没有突破防御，未造成伤害')
+        attack_enemie_sx['生命值'] -= attack
+    buff_level = 5
+    buff_name = "害怕"
     back_message = [attack_enemie_sx, user_sx, buff_name, buff_level]
     return back_message
     print('*' * 30)

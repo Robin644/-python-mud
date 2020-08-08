@@ -21,6 +21,7 @@ def shiqu(now_id):
         print('错误')
         pass
     else:
+        import sjk
         try:
             xuhao=int(input('输入你想要捡起的物品序号'))
             jianqi_thing=thingslist[xuhao]
@@ -28,13 +29,13 @@ def shiqu(now_id):
                 print('*'*10+'成功捡起'+'*'*10)
                 
                 if jianqi_thing in list(wear_name_id.keys()):
-                    player_wear_bag.append(thingslist[xuhao])
+                    sjk.player_wear_bag.append(thingslist[xuhao])
                     del thingslist[xuhao]
                 elif jianqi_thing  in list(weapon_name_id.keys()):
-                    player_weapon_bag.append(thingslist[xuhao])
+                    sjk.player_weapon_bag.append(thingslist[xuhao])
                     del thingslist[xuhao]
                 elif jianqi_thing in list(thing_name_id.keys()):
-                    player_things_bag.append(thingslist[xuhao])
+                    sjk.player_things_bag.append(thingslist[xuhao])
                     del thingslist[xuhao]
             else:
                 print('什么玩意傻了吧唧的')
@@ -152,7 +153,7 @@ def normal_npc_hd(npc_name,now_id):
                 print('\n\n你战胜了'+npc_name)
             elif message[0]=='失败':
                 print('\n\n'+npc_name+'把你打得满地找牙')
-            player_sx0['生命值']=message[1]
+            sjk.player_sx0['生命值']=message[1]
         if hudong=='闲聊':
             random_number=random.randint(0,5)
             if random_number == 0:
@@ -210,7 +211,7 @@ def sishen():
                 print('\n\n你战胜了'+npc_name)
             elif message[0]=='失败':
                 print('\n\n'+npc_name+'把你打得满地找牙')
-            player_sx0['生命值']=message[1]
+            sjk.player_sx0['生命值']=message[1]
 
         if hudong=='闲聊':
             random_number=random.randint(0,3)
@@ -258,7 +259,7 @@ def wushi():
                 print('\n\n你战胜了'+npc_name)
             elif message[0]=='失败':
                 print('\n\n'+npc_name+'把你打得满地找牙')
-            player_sx0['生命值']=message[1]
+            sjk.player_sx0['生命值']=message[1]
 
        
         if hudong=='闲聊':
@@ -314,7 +315,7 @@ def chuniang():
                 print('\n\n你战胜了'+npc_name)
             elif message[0]=='失败':
                 print('\n\n'+npc_name+'把你打得满地找牙')
-            player_sx0['生命值']=message[1]
+            sjk.player_sx0['生命值']=message[1]
 
         
         
@@ -403,7 +404,7 @@ def dongfang_youlong():
     print(sentence)
     while True:
         print("||||||||||||||||||||||")
-        hudong = input('指令：闲聊，道别：')
+        hudong = input('指令：闲聊，道别，新手礼包：')
         if hudong == '闲聊':
             random_number = random.randint(0, 3)
             if random_number == 0:
@@ -425,7 +426,59 @@ def dongfang_youlong():
                 print('\n\n你战胜了'+npc_name)
             elif message[0]=='失败':
                 print('\n\n'+npc_name+'把你打得满地找牙')
-            player_sx0['生命值']=message[1]
+            sjk.player_sx0['生命值']=message[1]
+        if hudong=='新手礼包':
+            if 2 not in sjk.player_completed_mission_id and 2 not in sjk.player_mission_id:
+                print(npc_name+'笑嘻嘻地对着你说道：你去帮我完成一个任务，事成之后你就可以得到新手礼包了，如何？')
+                sjk.player_mission_id.append(2)
+                print('\n\n系统:你获得了一项新任务，快去个人界面查看吧！')
+            else:
+                print(npc_name+'对你说：你之前不是已经接过这个任务了吗？你还想做一次？我可没有那么多奖励给你啊！！！')
+                continue
+def chicken():
+    import random
+    npc_name = '肉鸡'
+    sentence = 0
+    random_number = random.randint(0, 2)
+
+    if random_number == 0:
+        sentence = npc_name + '说:咕咕咕”'
+    if random_number == 1:
+        sentence = npc_name + '望着你说:“咕咕咕咕咕？咕咕咕”'
+    if random_number == 2:
+        sentence = npc_name + '说：“咕咕咕咕咕咕咕，呼呼'
+    try:
+        print('--------------特殊NPC:' + special_npc_wear_describe[npc_name] + npc_name + '(' + special_npc_name[
+            npc_name] + ')---------------')
+    except:
+        print('--------------特殊NPC:' + npc_name + '(' + special_npc_name[npc_name] + ')---------------')
+    try:
+        print('他看起来约莫已经' + special_npc_old['dongfang_youlong'] + '岁了')
+    except:
+        print('你没看出来他的年龄')
+    print(special_npc_describe[special_npc_name[npc_name]])
+    print('-' * 25)
+    print(sentence)
+    while True:
+        print("||||||||||||||||||||||")
+        hudong = input('指令：宰杀，道别')
+
+        if hudong == '道别':
+            print("你离开了咕咕咕")
+
+            break
+        if hudong=='宰杀':
+            print('你对着「'+npc_name+'」大喊:“小鸡崽子哪里跑？!”')
+            message=zhandou('chicken',0.6,is_special=1)
+            if message[0]=='胜利':
+                print('\n\n你宰杀了'+npc_name+'\n你获得了鸡的尸体*1')
+                sjk.player_things_bag.append('鸡的尸体')
+
+            elif message[0]=='失败':
+                print('\n\n'+npc_name+'把你打得满地找牙')
+                print('\n吐槽：不是吧？一只鸡你都打不过？你也太菜了吧，天啊。。。')
+            sjk.player_sx0['生命值']=message[1]
+
 
 #sishen()
 #normal_npc_hd("乞丐",0.1)

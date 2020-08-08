@@ -1,17 +1,22 @@
 #sjk
-#player_selfcheck(describe_list,player_wearing_describe,player_money,player_face,player_smz,player_max_smz,player_xb,player_describe_bag)
+#player_selfcheck(describe_list,player_wearing_describe,player_face,player_smz,player_max_smz,player_xb,player_describe_bag)
 #游戏物品,道具，武器，装备数据库
 #防具
-wear_name_id={'布衣':0,'太岁甲':1,'锁甲':2,'扎甲':3,'火烈甲':4}
+wear_name_id={'布衣':0,'太岁甲':1,'锁子甲':2,'扎甲':3,'火玉甲':4}
+wear_id_vaule={range(0,5):0}
 wear_id_name={}
 for key,value in wear_name_id.items():
     wear_id_name[value]=key#配对id与名字 
 
-wear_id_describe={0:'普普通通的一件布衣，普通百姓穿的\n防御+5',1:'上古神兵太岁甲，融合后可肉身无敌\n防御+2000',range(2,6):'描述'}
+wear_id_describe={0:'普普通通的一件布衣，普通百姓穿的\n防御+5',1:'上古神兵太岁甲，融合后可肉身无敌\n防御+2000',
+                  2:'锁子甲在中国古代又称“环锁铠”。一般由铁丝或铁环套扣缀合成衣状，每环与另四个环相套扣，形如网锁，不同文明地方制作材料不同。由西域传入中国',
+                  3:'这件装备由方形的甲片直接用皮条，绳索互相穿组。甲片横向纵向均互相叠压，刀剑难入'
+                  }
 #防具属性 防具附加属性是防御力，次级属性是价值
-wear_id_sx0={0:5,1:2000,2:25,3:35,4:500}
+wear_id_sx0={0:5,1:2000,2:25,3:35,4:500,5:20}
 #weapon
 weapon_name_id={'白铁素剑':0}
+weapon_id_vaule={0:0}
 weapon_id_name={}
 for key,value in weapon_name_id.items():
     weapon_id_name[value]=key#配对id与名字
@@ -20,17 +25,30 @@ weapon_id_describe={0:'普普通通的一把铁剑，江湖侠客必备\n攻击+
 #weapon属性 武器附加属性是攻击力,次级属性是价值
 weapon_id_sx0={0:5}
 #道具或物品
-thing_name_id={'答题卡':0,'神香':1,'问道卷○零':2,'问道卷○壹':3}
+thing_name_id={'答题卡':0,'神香':1,'问道卷○零':2,'问道卷○壹':3,"存档检测物品":4,
+               '鸡的尸体':5,
+               '新手礼包':6,
+               '小纸条_0':7
+               }
 thing_id_name={}
+thing_id_vaule={range(0,7):0}
 for key,value in thing_name_id.items():
     thing_id_name[value]=key#配对id与名字
-thing_id_describe={0:'！！！祝大家生地中考及期末考试圆满成功！！！\n----------\n|   满    |\n|   分    |\n----------',1:'一支神香，可以在巫师那求取，蕴含着一些神威',2:'看到这个就是出bug了',3:'看到这个就是出bug了'}
+thing_id_describe={0:'！！！祝大家生地中考及期末考试圆满成功！！！\n----------\n|   满    |\n|   分    |\n----------',
+                   1:'一支神香，可以在巫师那求取，蕴含着一些神威',
+                   2:'看到这个就是出bug了',
+                   3:'看到这个就是出bug了',
+                   4:"特殊",
+                   5:'一只新鲜的鸡的尸体，应该是刚刚宰杀的，适合用于做任务',
+                   6:'快拆开来看一看吧，里面应该有不少好东西！！',
+                   7:'一张奇怪的小纸条，不知道什么时候出现在你背包里的。要不要阅读一下呢？'
+                   }
 #战斗技能
-skill0_name_id={'血海无边':'xuehaiwubian','野球拳':'yeqiuquan','太极拳·阴':'taijiquan_yin',"太极拳":"taijiquan","苦海无边":"kuhaiwubian"}
+skill0_name_id={'血海无边':'xuehaiwubian','野球拳':'yeqiuquan','太极拳·阴':'taijiquan_yin',"太极拳":"taijiquan","苦海无边":"kuhaiwubian",'咕咕咕':'gugugu'}
 skill0_id_name={}
 for key,value in skill0_name_id.items():
     skill0_id_name[value]=key#配对id与名字
-skill0_id_describe={'xuehaiwubian':'技能内容','yeqiuquan':'技能内容','taijiquan_yin':"技能描述","taijiquan":'马保国老师',"kuhaiwubian":"sad"}
+skill0_id_describe={'xuehaiwubian':'技能内容','yeqiuquan':'技能内容','taijiquan_yin':"技能描述","taijiquan":'马保国老师',"kuhaiwubian":"sad",'gugugu':'npc肉鸡使用'}
 #生活技能:
 skill1_name_id={'厨艺':'chuyi','书法':'shufa'}
 skill1_id_name={}
@@ -47,37 +65,40 @@ import random
 #name
 player_name=None
 #称号
-describe_list=['普通百姓','人皇']
+describe_list=['普通百姓','人皇','内测玩家']
 player_wearing_describe=[]#已装备称号
 #****************
-player_weapon_bag=[weapon_id_name[0]]#武器背包
-player_wear_bag=[wear_id_name[2],wear_id_name[3]]#防具背包
+player_weapon_bag=[]#武器背包
+player_wear_bag=[]#防具背包
 player_wearing_weapon=[]#已装备的武器
 player_wearing_wear=[]#
-player_things_bag=[thing_id_name[0]]#物品背包
-player_describe_bag=[describe_list[1]]
-player_money=0
-player_face=random.randint(0,100)
+player_things_bag=[]#物品背包thing_id_name[0]
+player_describe_bag=[]
+
 
 
 #玩家属性
-player_sx0={'最大内力':100,'最大生命值':1500,'内力':150,'生命值':1100,'攻击力':50,'防御力':5,'闪躲力':10}
-player_sx1={'根骨':0,'悟性':0,'身法':0,'臂力':0}
+player_sx0={'最大内力':100,'最大生命值':100,'内力':150,'生命值':100,'攻击力':50,'防御力':5,'闪躲力':10}
+player_sx1={'根骨':0,'悟性':0,'身法':0,'臂力':0,'魅力':0}
 player_sx2={'银两':0,'黄金':0,'巫师':0}
+player_face=player_sx1['魅力']
 #玩家技能列表:
-player_skill0=[skill0_id_name['xuehaiwubian'],skill0_id_name['taijiquan']]#战斗技能
+player_skill0=[]#战斗技能
 player_skill1=[]#生活技能
-player_skill0_level={'xuehaiwubian':0}
+player_skill0_level={}
 player_skill1_level={}
 #玩家装备技能(只能装备战斗技能)
-player_wearing_skill=[]
+player_wearing_skill=['血海无边']
 
 
 #玩家任务列表:
 player_mission_id=[]#正在做的任务
 player_completed_mission_id=[]
 
-
+###############################
+################################
+####################################
+#######################################
 #以下是地图数据库:
 map_id_list=list(range(0,70))
 #大地图
@@ -109,7 +130,7 @@ map_room_yzc_id={'魔神殿':0.1,'城东大路':0.2,'城西大路':0.3,'城北�
 map_room_xj_id={'南天门':1.1}
 map_room_xj_name={}
 #~~~~~~~~~~~~~~~~~~~~~~~~~
-map_room_yzc_name={0.1:'魔神殿',0.2:'城东大路',0.3:'城西大路',0.4:'城北大路',
+map_room_yzc_name={0.1:'中央广场',0.2:'城东大路',0.3:'城西大路',0.4:'城北大路',
 0.5:'城南大路',0.6:'醉仙楼',0.7:'巫师庙',0.8:'城北大路',0.9:'城北大路',0.11:'郊外土路'}
 for key,value in map_room_yzc_id.items():
     map_room_yzc_name[value]=key#配对id与名字
@@ -175,7 +196,8 @@ normal_npc_sx={'最大生命值':100,'生命值':100,'攻击力':20,'防御力':
 
 #
 normal_npc_list=['老王','乞丐']
-normal_npc_name={normal_npc_list[0]:'laowang',normal_npc_list[1]:'qigai'}
+normal_npc_name={normal_npc_list[0]:'laowang',normal_npc_list[1]:'qigai'
+                 }
 
 normal_npc_id={'laowang':normal_npc_list[0],'qigai':normal_npc_list[1]}
 for key,value in normal_npc_name.items():
@@ -186,10 +208,15 @@ for key,value in normal_npc_name.items():
 
 #普通npc描述内容
 normal_npc_describe={'laowang':'他看起来贼眉鼠眼，嘴歪眼斜，身高七尺，看上去气血充盈，并没有受伤。',
-'qigai':'他看起来面容枯瘦，嘴歪眼斜，浑身散发着恶臭，让人看起来就很不舒服，你心里提醒你还是离他远一些吧'}#玩家看到普通npc时的形容
+'qigai':'他看起来面容枯瘦，嘴歪眼斜，浑身散发着恶臭，让人看起来就很不舒服，你心里提醒你还是离他远一些吧',
+}#玩家看到普通npc时的形容
 #特殊npc
-special_npc_list=['死神','巫师','厨娘','东方游龙']
-special_npc_name={special_npc_list[0]:'sishen',special_npc_list[1]:'wushi',special_npc_list[2]:'chuniang',special_npc_list[3]:'dongfang_youlong'}
+special_npc_list=['死神','巫师','厨娘','东方游龙','肉鸡']
+special_npc_name={special_npc_list[0]:'sishen',
+                  special_npc_list[1]:'wushi',
+                  special_npc_list[2]:'chuniang',
+                  special_npc_list[3]:'dongfang_youlong',
+                  special_npc_list[4]:'chicken'}
 special_npc_id={}
 for key,value in special_npc_name.items():
     special_npc_id[value]=key#配对id与名字
@@ -199,15 +226,17 @@ for key,value in special_npc_name.items():
 special_npc_describe={'sishen':'他看起来倾国倾城，无数人为之倾倒，身披黑衣，一团黑暗的浓雾缠绕他周身。周围充斥着无形的威压，冰冷到极致，让人几乎无法呼吸。',
 'wushi':'他是全国鼎鼎有名的大巫神，据说武功已经达到了神境，肉身已经达到了金身等级，犹如一尊真神。',
 'chuniang':'这位是酒楼的厨娘，看起来貌美如花，手中拿着竹扇子，正在缓缓地扇动着，美眸不时朝你看来。',
-'dongfang_youlong':'他是来自东方的神秘大能，也是游戏中的新手向导，有什么问题可以向他提问哦。'}#玩家看到普通npc时的形容
+'dongfang_youlong':'他是来自东方的神秘大能，也是游戏中的新手向导，有什么问题可以向他提问哦。',
+'chicken':'一只正在咕咕叫的肉鸡'}#玩家看到普通npc时的形容
 #以下是特殊npc的属性
-special_npc_old={'sishen':'未知','wushi':'未知','chuniang':'未知','dongfang_youlong':'未知'}
-special_npc_wear_describe={'死神':'「不死不灭」','巫师':'「肉身真神」','厨娘':'「富可敌国」','dongfang_youlong':'「新手引导」'}
+special_npc_old={'sishen':'未知','wushi':'未知','chuniang':'未知','dongfang_youlong':'未知','chicken':'咕咕咕'}
+special_npc_wear_describe={'死神':'「不死不灭」','巫师':'「肉身真神」','厨娘':'「富可敌国」','dongfang_youlong':'「新手使者」','chicken':'「咕咕咕」'}
 #特殊npc战斗属性
 special_npc_sishen_sx={'最大生命值':1000,'生命值':1000,'攻击力':2005,'防御力':2005,'闪躲力':10}
 special_npc_wushi_sx={'最大生命值':1000,'生命值':1000,'攻击力':25,'防御力':25,'闪躲力':10}
 special_npc_chuniang_sx={'最大生命值':1000,'生命值':1000,'攻击力':25,'防御力':25,'闪躲力':10}
 special_npc_dongfang_youlong_sx={'最大生命值':5200000,'生命值':5200000,'攻击力':1,'防御力':9999,'闪躲力':10}
+special_npc_chicken_sx={'最大生命值':100,'生命值':100,'攻击力':1,'防御力':1,'闪躲力':10}
 #普通npc技能列表
 normal_npc_skill=[skill0_id_name['yeqiuquan']]
 
@@ -217,6 +246,7 @@ sishen_skill=[skill0_id_name['xuehaiwubian']]
 chuniang_skill=[skill0_id_name['xuehaiwubian']]
 wushi_skill=[skill0_id_name['xuehaiwubian']]
 dongfang_youlong_skill=[skill0_id_name['kuhaiwubian']]
+chicken_skill=[skill0_id_name['gugugu']]
 
 
 
@@ -227,23 +257,24 @@ npc_room_0_2=[normal_npc_id['laowang']]
 npc_room_room_0_61=[normal_npc_id['laowang']]
 # special_npc_room_x_x
 special_npc_room_room_0_71=[special_npc_id['wushi']]
-special_npc_room_room_0_61=[special_npc_id['chuniang']]
+special_npc_room_room_0_61=[special_npc_id['chuniang'],special_npc_id['chicken']]
 special_npc_room_0_7=[]
 special_npc_room_0_1=[special_npc_list[0],special_npc_list[3]]
 #以下是地图房间上散落的东西，如果没有这个就丢不了东西
 thing_room_0_11=[weapon_id_name[0]]
-thing_room_0_1=[wear_id_name[0]]
+thing_room_0_1=[wear_id_name[0],thing_id_name[4]]
 
 
 #以下是房间房间上散落的东西
 thing_room_room_0_61=[wear_id_name[0]]
 
 def get_player_name():
-    player_name = input("你是魔帝之子，名为:")
-    if player_name=="" or player_name==" ":
-        print("你的名字叫 吗？不是吧不是吧，好吧我帮你想一个名字吧，以后你就叫 陌 了！")
-        player_name="陌"
-    return player_name
+    import sjk
+    sjk.player_name = input("少侠，请问您名为:")
+    if sjk.player_name=="" or sjk.player_name.replace(' ','')=="":
+        print("你的名字叫 吗？不是吧不是吧，好吧我帮你想一个名字吧，以后你就叫 小虾米 了！")
+        sjk.player_name="小虾米"
+    return sjk.player_name
 
 
 
